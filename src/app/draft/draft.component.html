@@ -1,0 +1,47 @@
+<br />
+<div class="row">
+  <div class="col-lg-2 col-md-2"></div>
+  <div class="col-lg-8 col-md-8">
+    <div class="card">
+      <div class="card-header p-3 mb-2 bg-warning text-white">
+        Current WS-Draft-Report &nbsp;&nbsp;
+        <button type="button" class="btn btn-info btn-sm" (click)="enableEditDraft=true" *ngIf="!enableEditDraft">Edit Draft</button>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="draftReportFormGroup" (ngSubmit)="updateDraftReport()">
+          <div class="form-group">
+            <label for="">Report Date</label>
+            <input type="date" name="report_date" class="form-control" formControlName="report_date" [readOnly]="!enableEditDraft">
+          </div>
+          <div class="form-group">
+            <label for="">Report Start</label>
+            <input type="date" name="ws_start" class="form-control" formControlName="ws_start" [readOnly]="!enableEditDraft">
+          </div>
+          <div class="form-group">
+            <label for="">Report End</label>
+            <input type="date" name="ws_end" class="form-control" formControlName="ws_end" [readOnly]="!enableEditDraft">
+          </div>
+          <div class="form-group">
+            <label for="">Bugzilla URL</label>
+            <input type="text" name="bugzillaURL" class="form-control" formControlName="bugzillaURL" [readOnly]="!enableEditDraft">
+          </div>
+          <div class="form-group">
+            <label for="">Highlights</label>
+            <textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights" [readOnly]="!enableEditDraft"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="">Code Reviews</label>
+            <textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews" [readOnly]="!enableEditDraft"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="">Plan for this week</label>
+            <textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek" [readOnly]="!enableEditDraft"></textarea>
+          </div>
+          <input type="submit" name="submit" value="Update Draft" class="btn btn-primary" *ngIf="enableEditDraft">
+          <button type="button" class="btn btn-success" (click)="submitFinalReport()" *ngIf="enableEditDraft">Submit Report</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
