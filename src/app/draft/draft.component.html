@@ -5,9 +5,15 @@
     <div class="card">
       <div class="card-header p-3 mb-2 bg-warning text-white">
         Current WS-Draft-Report &nbsp;&nbsp;
-        <button type="button" class="btn btn-info btn-sm" (click)="enableEditDraft=true" *ngIf="!enableEditDraft">Edit Draft</button>
+        <button type="button" class="btn btn-info btn-sm" (click)="enableEditDraft=true" *ngIf="!enableEditDraft && !noDraftReport">Edit Draft</button>
       </div>
       <div class="card-body">
+        <div *ngIf="draftUpdateError">
+          <div class="alert alert-danger">{{draftUpdateErrorMessage}}</div>
+        </div>
+        <div *ngIf="submitDraftError">
+          <div class="alert alert-danger">{{submitDraftErrorMessage}}</div>
+        </div>
         <form [formGroup]="draftReportFormGroup" (ngSubmit)="updateDraftReport()">
           <div class="form-group">
             <label for="">Report Date</label>
@@ -38,7 +44,14 @@
             <textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek" [readOnly]="!enableEditDraft"></textarea>
           </div>
           <input type="submit" name="submit" value="Update Draft" class="btn btn-primary" *ngIf="enableEditDraft">
-          <button type="button" class="btn btn-success" (click)="submitFinalReport()" *ngIf="enableEditDraft">Submit Report</button>
+          <button type="button" class="btn btn-success" (click)="submitFinalReport()" *ngIf="!enableEditDraft && !noDraftReport">Submit Report</button>
+          <br /><br />
+          <div *ngIf="draftUpdateError">
+            <div class="alert alert-danger">{{draftUpdateErrorMessage}}</div>
+          </div>
+          <div *ngIf="submitDraftError">
+            <div class="alert alert-danger">{{submitDraftErrorMessage}}</div>
+          </div>
         </form>
       </div>
     </div>

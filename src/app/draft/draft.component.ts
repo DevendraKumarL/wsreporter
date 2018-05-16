@@ -14,6 +14,13 @@ export class DraftComponent {
 
   public enableEditDraft : boolean = false;
 
+  public draftUpdateError : boolean = false;
+  public draftUpdateErrorMessage : string = "";
+  public noDraftReport : boolean = false;
+
+  public submitDraftError : boolean = false;
+  public submitDraftErrorMessage : string = "";
+
   constructor(public formBuilder : FormBuilder,
     public wsbe : WsbeApiService, public router : Router) {
       this.draftReportFormGroup = this.formBuilder.group({
@@ -28,9 +35,14 @@ export class DraftComponent {
 
       let observableObject = this.wsbe.getDraftReport();
       observableObject.subscribe((report : any) => {
-        this.wsbe.draftReport = report[0];
-        console.log("Draft report: ", this.wsbe.draftReport);
-        this.updateDataInFormGroup(this.wsbe.draftReport);
+        console.log("Success response: ", report)
+        if (report.length > 0) {
+          this.wsbe.draftReport = report[0];
+          console.log("Draft report: ", this.wsbe.draftReport);
+          this.updateDataInFormGroup(this.wsbe.draftReport);
+        } else {
+          this.noDraftReport = true;
+        }
       });
   }
 
@@ -63,13 +75,33 @@ export class DraftComponent {
       this.wsbe.draftReport = response.updatedDraft;
       this.updateDataInFormGroup(this.wsbe.draftReport);
       this.enableEditDraft = false;
+
+      this.draftUpdateError = false;
+      this.draftUpdateErrorMessage = "";
+      this.submitDraftError = false;
+      this.submitDraftErrorMessage = "";
     }, (error : any ) => {
       console.log("Error response: ", error);
-    })
+      this.draftUpdateError = true;
+      this.draftUpdateErrorMessage = error.error.error;
+      this.submitDraftError = false;
+      this.submitDraftErrorMessage = "";
+    });
   }
 
   submitFinalReport() {
-
+    let observableObject = this.wsbe.submitReport();
+    observableObject.subscribe((response :any ) => {
+      console.log("Success response: ", response);
+      this.wsbe.draftReport = {};
+      this.router.navigate(["/reports"]);
+    }, (error : any) => {
+      console.log("Error response: ", error);
+      this.submitDraftError = true;
+      this.submitDraftErrorMessage = error.error.error;
+      this.draftUpdateError = false;
+      this.draftUpdateErrorMessage = "";
+    });
   }
 
 }

@@ -5,6 +5,9 @@
     <div class="card">
       <div class="card-header p-3 mb-2 bg-info text-white">New WS-Draft-Report</div>
       <div class="card-body">
+        <div *ngIf="formError">
+          <div class="alert alert-danger">{{formErrorMessage}}</div>
+        </div>
         <form [formGroup]="reportFormGroup" (ngSubmit)="submitDraftReport()">
           <div class="form-group">
             <label for="">Report Date</label>
@@ -36,7 +39,7 @@
           </div>
           <input type="submit" name="submit" value="Save Draft" class="btn btn-success">
           <br /><br />
-          <div *ngIf="formError" id="formError">
+          <div *ngIf="formError">
             <div class="alert alert-danger">{{formErrorMessage}}</div>
           </div>
         </form>

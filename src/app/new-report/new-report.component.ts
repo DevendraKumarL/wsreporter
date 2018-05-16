@@ -42,11 +42,11 @@ export class NewReportComponent {
     let observableObject = this.wsbe.newDraftReport(report);
     observableObject.subscribe((response : any) => {
       console.log("Success response: ", response);
-      this.router.navigate(['/']);
+      this.router.navigate(['draft']);
     }, (error : any ) => {
       console.log("Error response: ", error);
       this.formError = true;
-      this.formErrorMessage = error.error;
+      this.formErrorMessage = error.error.error;
     })
   }
 
