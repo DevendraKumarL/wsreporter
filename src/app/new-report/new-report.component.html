@@ -1,50 +1,98 @@
 <br />
+
+<div class="row" *ngIf="wsbe.draftPresent">
+	<div class="col-lg-12 col-md-12">
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+			There is a draft already saved.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	</div>
+</div>
+
 <div class="row">
-  <div class="col-lg-2 col-md-2"></div>
-  <div class="col-lg-8 col-md-8">
-    <div class="card">
-      <div class="card-header p-3 mb-2 bg-info text-white">New WS-Draft-Report</div>
-      <div class="card-body">
-        <div *ngIf="formError">
-          <div class="alert alert-danger">{{formErrorMessage}}</div>
-        </div>
-        <form [formGroup]="reportFormGroup" (ngSubmit)="submitDraftReport()">
-          <div class="form-group">
-            <label for="">Report Date</label>
-            <input type="date" name="report_date" class="form-control" formControlName="report_date">
-          </div>
-          <div class="form-group">
-            <label for="">Report Start</label>
-            <input type="date" name="ws_start" class="form-control" formControlName="ws_start">
-          </div>
-          <div class="form-group">
-            <label for="">Report End</label>
-            <input type="date" name="ws_end" class="form-control" formControlName="ws_end">
-          </div>
-          <div class="form-group">
-            <label for="">Bugzilla URL</label>
-            <input type="text" name="bugzillaURL" class="form-control" formControlName="bugzillaURL">
-          </div>
-          <div class="form-group">
-            <label for="">Highlights</label>
-            <textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="">Code Reviews</label>
-            <textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="">Plan for this week</label>
-            <textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek"></textarea>
-          </div>
-          <input type="submit" name="submit" value="Save Draft" class="btn btn-success">
-          <br /><br />
-          <div *ngIf="formError">
-            <div class="alert alert-danger">{{formErrorMessage}}</div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+	<div class="col-lg-2 col-md-2"></div>
+	<div class="col-lg-8 col-md-8">
+		<div class="card">
+			<div class="card-header p-3 mb-2 bg-info text-white">New WS-Draft-Report</div>
+			<div class="card-body">
+				<div *ngIf="formError">
+					<div class="alert alert-danger">{{formErrorMessage}}</div>
+				</div>
+				<form [formGroup]="reportFormGroup" (ngSubmit)="submitDraftReport()">
+					<div class="form-group">
+						<label for="">Report Date</label>
+						<input type="date" name="report_date" class="form-control" formControlName="report_date">
+						<div *ngIf="reportFormGroup.controls.report_date.invalid && (reportFormGroup.controls.report_date.dirty || reportFormGroup.controls.report_date.touched)">
+							<div *ngIf="reportFormGroup.controls.report_date.errors.required" class="text-danger">
+								Report Date is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Report Start</label>
+						<input type="date" name="ws_start" class="form-control" formControlName="ws_start">
+						<div *ngIf="reportFormGroup.controls.ws_start.invalid && (reportFormGroup.controls.ws_start.dirty || reportFormGroup.controls.ws_start.touched)">
+							<div *ngIf="reportFormGroup.controls.ws_start.errors.required" class="text-danger">
+								Report Start Date is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Report End</label>
+						<input type="date" name="ws_end" class="form-control" formControlName="ws_end">
+						<div *ngIf="reportFormGroup.controls.ws_end.invalid && (reportFormGroup.controls.ws_end.dirty || reportFormGroup.controls.ws_end.touched)">
+							<div *ngIf="reportFormGroup.controls.ws_end.errors.required" class="text-danger">
+								Report End Date is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Bugzilla URL</label>
+						<input type="text" name="bugzillaURL" class="form-control" formControlName="bugzillaURL">
+						<div *ngIf="reportFormGroup.controls.bugzillaURL.invalid && (reportFormGroup.controls.bugzillaURL.dirty || reportFormGroup.controls.bugzillaURL.touched)">
+							<div *ngIf="reportFormGroup.controls.bugzillaURL.errors.required" class="text-danger">
+								BugzillaURL is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Highlights</label>
+						<textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights"></textarea>
+						<div *ngIf="reportFormGroup.controls.highlights.invalid && (reportFormGroup.controls.highlights.dirty || reportFormGroup.controls.highlights.touched)">
+							<div *ngIf="reportFormGroup.controls.highlights.errors.required" class="text-danger">
+								Highlights description is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Code Reviews</label>
+						<textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews"></textarea>
+						<div *ngIf="reportFormGroup.controls.codeReviews.invalid && (reportFormGroup.controls.codeReviews.dirty || reportFormGroup.controls.codeReviews.touched)">
+							<div *ngIf="reportFormGroup.controls.codeReviews.errors.required" class="text-danger">
+								CodeReviews description is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Plan for this week</label>
+						<textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek"></textarea>
+						<div *ngIf="reportFormGroup.controls.planForWeek.invalid && (reportFormGroup.controls.planForWeek.dirty || reportFormGroup.controls.planForWeek.touched)">
+							<div *ngIf="reportFormGroup.controls.planForWeek.errors.required" class="text-danger">
+								Plan for week description is required
+							</div>
+						</div>
+					</div>
+					<input type="submit" name="submit" value="Save Draft" class="btn btn-success" [disabled]="!reportFormGroup.valid || formError" *ngIf="!wsbe.draftPresent">
+					<br />
+					<br />
+					<div *ngIf="formError">
+						<div class="alert alert-danger">{{formErrorMessage}}</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 <br />

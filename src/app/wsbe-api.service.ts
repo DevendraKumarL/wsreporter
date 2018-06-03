@@ -4,51 +4,53 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class WsbeApiService {
 
-  public apiURL = "http://localhost:5000/wsbe/";
+	public apiURL = "http://localhost:5000/wsbe/";
 
-  public reports : any = [];
+	public reports: any = [];
+	public draftReport: any;
+	public draftPresent: boolean = false;
 
-  public draftReport : any = {};
+	constructor(public client: HttpClient) { }
 
-  constructor(public client : HttpClient) {}
+	fetchReports() {
+		this.reports = [];
+		this.client.get(this.apiURL + "reports").subscribe((reports: any) => {
+			console.log("Success response. reports: ", reports);
+			for (let i = 0; i < reports.length; ++i) {
+				this.reports.push({
+					report_date: new Date(reports[i].report_date).toISOString().substr(0, 10),
+					ws_start: new Date(reports[i].ws_start).toISOString().substr(0, 10),
+					ws_end: new Date(reports[i].ws_end).toISOString().substr(0, 10),
+					bugzillaURL: reports[i].bugzillaURL,
+					highlights: reports[i].highlights,
+					codeReviews: reports[i].codeReviews,
+					planForWeek: reports[i].planForWeek
+				});
+			}
+		}, (error: any) => {
+			console.log("Error response. error: ", error);
+		});
+	}
 
-  fetchReports() {
-    let observableObject = this.client.get(this.apiURL + "reports");
-    observableObject.subscribe((reports : any) => {
-      if (reports.length > 0) {
-        this.reports = [];
-        reports.forEach(report => {
-          let tmpDraft = {
-            report_date: new Date(report.report_date).toISOString().substr(0, 10),
-            ws_start: new Date(report.ws_start).toISOString().substr(0, 10),
-            ws_end: new Date(report.ws_end).toISOString().substr(0, 10),
-            bugzillaURL: report.bugzillaURL,
-            highlights: report.highlights,
-            codeReviews: report.codeReviews,
-            planForWeek: report.planForWeek
-          };
-          this.reports.push(tmpDraft);
-        });
-        console.log("Reports: ", this.reports);
-      }
-    });
-  }
+	
+	getDraftReport() {
+		return this.client.get(this.apiURL + "draft");
+	}
 
-  newDraftReport(draftReportData : any) {
-    return this.client.post(this.apiURL + "draft", draftReportData);
-  }
+	newDraftReport(draftReportData: any) {
+		return this.client.post(this.apiURL + "draft", draftReportData);
+	}
 
-  getDraftReport() {
-    return this.client.get(this.apiURL + "draft");
-  }
+	updateDraftReport(newDraftReportData: any) {
+		return this.client.put(this.apiURL + "draft", newDraftReportData);
+	}
 
-  updateDraftReport(newDraftReportData : any) {
-    return this.client.put(this.apiURL + "draft", newDraftReportData);
-  }
+	submitReport() {
+		return this.client.post(this.apiURL + "report", this.draftReport);
+	}
 
-  submitReport() {
-    console.log("Draft report saved in wsbe: ", this.draftReport);
-    return this.client.post(this.apiURL + "report", this.draftReport);
-  }
+	deleteDraftReport() {
+		return this.client.delete(this.apiURL + "draft/" + this.draftReport._id);
+	}
 
 }
