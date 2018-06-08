@@ -9,9 +9,7 @@ import { WsbeApiService } from '../wsbe-api.service';
 export class ReportsComponent {
 
 	constructor(public wsbe: WsbeApiService) {
-		if (this.wsbe.reports.length === 0) {
-			this.wsbe.fetchReports();
-		}
+		this.wsbe.fetchReports();
 	}
 
 }

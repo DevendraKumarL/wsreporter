@@ -15,7 +15,6 @@ export class WsbeApiService {
 	fetchReports() {
 		this.reports = [];
 		this.client.get(this.apiURL + "reports").subscribe((reports: any) => {
-			console.log("Success response. reports: ", reports);
 			for (let i = 0; i < reports.length; ++i) {
 				this.reports.push({
 					report_date: new Date(reports[i].report_date).toISOString().substr(0, 10),
@@ -24,15 +23,29 @@ export class WsbeApiService {
 					bugzillaURL: reports[i].bugzillaURL,
 					highlights: reports[i].highlights,
 					codeReviews: reports[i].codeReviews,
-					planForWeek: reports[i].planForWeek
+					planForWeek: reports[i].planForWeek,
+					_id: reports[i]._id
 				});
 			}
+			console.log("Success response. reports: ", this.reports);
 		}, (error: any) => {
 			console.log("Error response. error: ", error);
 		});
 	}
 
-	
+	submitReport() {
+		return this.client.post(this.apiURL + "report", this.draftReport);
+	}
+
+	deleteDraftReport() {
+		return this.client.delete(this.apiURL + "draft/" + this.draftReport._id);
+	}
+
+	getReport(reportID) {
+		return this.client.get(this.apiURL + "report/" + reportID);
+	}
+
+
 	getDraftReport() {
 		return this.client.get(this.apiURL + "draft");
 	}
@@ -44,13 +57,4 @@ export class WsbeApiService {
 	updateDraftReport(newDraftReportData: any) {
 		return this.client.put(this.apiURL + "draft", newDraftReportData);
 	}
-
-	submitReport() {
-		return this.client.post(this.apiURL + "report", this.draftReport);
-	}
-
-	deleteDraftReport() {
-		return this.client.delete(this.apiURL + "draft/" + this.draftReport._id);
-	}
-
 }

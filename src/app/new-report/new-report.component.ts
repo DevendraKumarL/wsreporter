@@ -18,9 +18,7 @@ export class NewReportComponent {
 	constructor(public formBuilder: FormBuilder,
 		public wsbe: WsbeApiService, public router: Router) {
 		
-		if (this.wsbe.reports.length === 0) {
-			this.wsbe.fetchReports();
-		}
+		this.wsbe.fetchReports();
 
 		this.reportFormGroup = this.formBuilder.group({
 			report_date: ["", Validators.compose([Validators.required])],

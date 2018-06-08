@@ -13,6 +13,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ReportComponent } from './report/report.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DraftComponent } from './draft/draft.component';
+import { SingleReportComponent } from './single-report/single-report.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { DraftComponent } from './draft/draft.component';
     NewReportComponent,
     ReportsComponent,
     ReportComponent,
-    DraftComponent
+    DraftComponent,
+    SingleReportComponent
   ],
   imports: [
     BrowserModule,

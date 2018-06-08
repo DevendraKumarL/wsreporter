@@ -27,9 +27,7 @@ export class DraftComponent {
 	constructor(public formBuilder: FormBuilder,
 		public wsbe: WsbeApiService, public router: Router) {
 
-		if (this.wsbe.reports.length === 0) {
-			this.wsbe.fetchReports();
-		}
+		this.wsbe.fetchReports();
 
 		this.draftReportFormGroup = this.formBuilder.group({
 			report_date: ["", Validators.compose([Validators.required])],
