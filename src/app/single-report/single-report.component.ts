@@ -19,6 +19,7 @@ export class SingleReportComponent {
 		this.activeRoute.params.subscribe(params => {
 			this.reportID = params.id;
 			console.log("reportID: ", this.reportID);
+			this.wsService.fetchReports();
 			this.getReport();
 		});
 	}

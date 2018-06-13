@@ -15,7 +15,8 @@ export class WsbeApiService {
 	fetchReports() {
 		this.reports = [];
 		this.client.get(this.apiURL + "reports").subscribe((reports: any) => {
-			for (let i = 0; i < reports.length; ++i) {
+			// latest report first - stack
+			for (let i = reports.length - 1; i >= 0; i--) {
 				this.reports.push({
 					report_date: new Date(reports[i].report_date).toISOString().substr(0, 10),
 					ws_start: new Date(reports[i].ws_start).toISOString().substr(0, 10),
@@ -34,7 +35,10 @@ export class WsbeApiService {
 	}
 
 	submitReport() {
-		return this.client.post(this.apiURL + "report", this.draftReport);
+		let report = JSON.parse(JSON.stringify(this.draftReport)); // deep clone
+		report.highlights = report.highlights.replace(new RegExp('\n', 'g'), "<br>");
+		console.log("***report*** : ", report);
+		return this.client.post(this.apiURL + "report", report);
 	}
 
 	deleteDraftReport() {
