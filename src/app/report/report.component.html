@@ -8,14 +8,15 @@
 				</a>
 			</div>
 			<div class="card-body">
-				<span>{{reportData.wsrPeroid}}</span><br>
+				<span>{{reportData.wsrPeroid}}</span>
+				<br>
 				<span>{{reportData.line2}}</span>
 				<ul>
 					<li>
 						Highlights
 						<ul>
-							<li *ngFor="let hgl of reportData.highlights">
-								{{hgl}}
+							<li *ngFor="let highlight of reportData.highlights">
+								{{highlight}}
 							</li>
 						</ul>
 					</li>
@@ -30,16 +31,16 @@
 					<li>
 						Code Reviews
 						<ul>
-							<li *ngFor="let cdr of reportData.codeReviews">
-								{{cdr}}
+							<li *ngFor="let codeReview of reportData.codeReviews">
+								{{codeReview}}
 							</li>
 						</ul>
 					</li>
 					<li>
 						Plan for this week
 						<ul>
-							<li *ngFor="let plw of reportData.planForWeek">
-								{{plw}}
+							<li *ngFor="let plan of reportData.planForWeek">
+								{{plan}}
 							</li>
 						</ul>
 					</li>
@@ -48,38 +49,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- old format of report -->
-<!-- <div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="card">
-			<div class="card-header">
-				<a [routerLink]="['/report/', reportDetails._id]">
-					WSR - {{reportDetails.report_date}}
-				</a>
-			</div>
-			<div class="card-body">
-				<p>WSR for the period: {{reportDetails.ws_start}} - {{reportDetails.ws_end}}</p>
-				<p>Project: Horizon 7</p>
-				<ul>
-					<li>
-						<b>Highlights</b>
-						<p [innerHTML]="reportDetails.highlights"></p>
-					</li>
-					<li>
-						<b>Bugs</b>
-						<p>{{reportDetails.bugzillaURL}}</p>
-					</li>
-					<li>
-						<b>Code Reviews</b>
-						<p [innerHTML]="reportDetails.codeReviews"></p>
-					</li>
-					<li>
-						<b>Plan for this week</b>
-						<p [innerHTML]="reportDetails.planForWeek"></p>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div> -->

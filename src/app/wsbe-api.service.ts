@@ -4,11 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class WsbeApiService {
 
-	public apiURL = "http://localhost:5000/wsbe/";
+	public apiURL = "http://localhost:5002/wsbe/";
+	public mailURL = "http://localhost:5000/wsmailer/sendmail";
 
 	public reports: any = [];
 	public draftReport: any;
 	public draftPresent: boolean = false;
+	public mailSettings: any;
 
 	constructor(public client: HttpClient) { }
 
@@ -60,5 +62,26 @@ export class WsbeApiService {
 
 	updateDraftReport(newDraftReportData: any) {
 		return this.client.put(this.apiURL + "draft", newDraftReportData);
+	}
+
+
+	fetchMailSettings() {
+		return this.client.get(this.apiURL + "mailsettings");
+	}
+
+	updateMailSettings(newMailSettings) {
+		let mailSettingsChanged = JSON.stringify(this.mailSettings) !== JSON.stringify(newMailSettings);
+		console.log("mailSettingsChanged: ", mailSettingsChanged);
+		if (mailSettingsChanged) {
+			this.client.put(this.apiURL + "mailsettings", newMailSettings).subscribe((response) => {
+				console.log("Success response. response: ", response);
+			}, (error) => {
+				console.log("Error response. error: ", error.error.error);
+			});
+		}
+	}
+
+	sendWSReportMail(mailData) {
+		return this.client.post(this.mailURL, mailData);
 	}
 }
