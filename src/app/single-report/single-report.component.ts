@@ -19,14 +19,24 @@ export class SingleReportComponent {
 	public errMsg: string;
 
 	public mailForm: FormGroup;
+	public outlookForm: FormGroup;
 	public senderPassword: String;
 	public mailSettings: any = {};
 
 	public errorOccured: boolean = false;
+	public smtpActive: boolean = true;
+
 	public sending: boolean = false;
+	public sent: boolean = false;
 
 	@ViewChild("mailModal")
 	public mailModal: ElementRef;
+
+	@ViewChild("smtpTab")
+	public smtpTab: ElementRef;
+
+	@ViewChild("outlookTab")
+	public outlookTab: ElementRef;
 
 	constructor(public activeRoute: ActivatedRoute, public wsService: WsbeApiService,
 		public formB: FormBuilder) {
@@ -39,6 +49,12 @@ export class SingleReportComponent {
 				from_: ["", Validators.compose([Validators.required, Validators.email])],
 				from_name: ["", Validators.compose([Validators.required])],
 				pass_: ["", Validators.compose([Validators.required])],
+				to_: ["", Validators.compose([Validators.required, Validators.email])],
+				to_name: ["", Validators.compose([Validators.required])],
+				project_name: ["", Validators.compose([Validators.required])]
+			});
+			this.outlookForm = this.formB.group({
+				from_name: ["", Validators.compose([Validators.required])],
 				to_: ["", Validators.compose([Validators.required, Validators.email])],
 				to_name: ["", Validators.compose([Validators.required])],
 				project_name: ["", Validators.compose([Validators.required])]
@@ -70,7 +86,7 @@ export class SingleReportComponent {
 	}
 
 	getMailSettings() {
-		this.wsService.fetchMailSettings().subscribe((mailSettings) => {
+		this.wsService.fetchMailSettings().subscribe((mailSettings: any) => {
 			console.log("Success response. mailSettings: ", mailSettings);
 			this.wsService.mailSettings = mailSettings[0];
 			this.mailSettings = {
@@ -82,7 +98,7 @@ export class SingleReportComponent {
 			};
 			delete this.wsService.mailSettings._id;
 			delete this.wsService.mailSettings.__v;
-		}, (error) => {
+		}, (error: any) => {
 			console.log("Error response. error: ", error.error.error);
 		});
 	}
@@ -91,7 +107,20 @@ export class SingleReportComponent {
 		this.wsService.updateMailSettings(this.mailSettings);
 	}
 
-	sendMail() {
+	closeMailForm() {
+		this.errorOccured = false;
+		this.senderPassword = "";
+		this.sending = false;
+		this.smtpActive = true;
+		$(this.smtpTab.nativeElement).trigger('click');
+	}
+
+	switchSettings(flag) {
+		this.smtpActive = flag;
+		this.errorOccured = false;
+	}
+
+	sendSMTPMail() {
 		this.sending = true;
 		this.saveMailSettings();
 		let mailData = {
@@ -99,18 +128,43 @@ export class SingleReportComponent {
 			from_name: this.mailSettings.from_name,
 			to_: this.mailSettings.to_,
 			to_name: this.mailSettings.to_name,
+			project_name: this.mailSettings.project_name,
 			pass_: this.senderPassword,
 			report: this.report
 		};
-		this.wsService.sendWSReportMail(mailData).subscribe((response) => {
+		console.log(mailData);
+		this.wsService.sendWSReportMail(mailData).subscribe((response: any) => {
 			console.log("Success response. response: ", response);
-			this.errorOccured = false;
-			this.sending = false;
+			this.closeMailForm();
+			this.sent = true;
 			$(this.mailModal.nativeElement).modal("hide");
-		}, (error) => {
+		}, (error: any) => {
 			console.log("Error response, error: ", error);
 			this.errorOccured = true;
-			this.sending = false;			
+			this.sending = false;
 		});
+	}
+
+	sendOutlookMail() {
+		this.sending = true;
+		this.saveMailSettings();
+		let mailData = {
+			from_name: this.mailSettings.from_name,
+			to_: this.mailSettings.to_,
+			to_name: this.mailSettings.to_name,
+			project_name: this.mailSettings.project_name,
+			report: this.report
+		};
+		console.log(mailData);
+		this.wsService.sendWSReportOutlookMail(mailData).subscribe((response: any) => {
+			console.log("Success response. response: ", response);
+			this.closeMailForm();
+			this.sent = true;
+			$(this.mailModal.nativeElement).modal("hide");
+		}, (error: any) => {
+			console.log("Error response, error: ", error);
+			this.errorOccured = true;
+			this.sending = false;
+		})
 	}
 }

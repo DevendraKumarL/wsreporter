@@ -12,6 +12,18 @@
 	</div>
 </div>
 
+<div class="row" *ngIf="sent">
+	<div class="col-lg-12 col-md-12">
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only">Close</span>
+			</button>
+			<b>The report was mailed successfully!</b>
+		</div>
+	</div>
+</div>
+
 <div class="row" *ngIf="report !== undefined">
 	<div class="col-lg-12 col-md-12">
 		<h5>
@@ -32,77 +44,162 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form [formGroup]="mailForm">
-					<div class="form-group">
-						<label>Sender Email<span class="text-danger">*</span></label>
-						<input type="email" name="from_" class="form-control" placeholder="sender@me.com" formControlName="from_" [(ngModel)]="mailSettings.from_">
-						<div *ngIf="mailForm.controls.from_.invalid && (mailForm.controls.from_.dirty || mailForm.controls.from_.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.from_.errors.required">
-								Sender Email ID is required
-							</div>
-							<div class="text-danger" *ngIf="mailForm.controls.from_.errors.email">
-								Email ID is incorrect
-							</div>
-						</div>
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a href="#smtp" class="nav-link active" id="smtp-tab" data-toggle="tab" role="tab" aria-controls="smtp" aria-selected="true"
+						 (click)="switchSettings(true)" #smtpTab>SMTP</a>
+					</li>
+					<li class="nav-item">
+						<a href="#outlook" class="nav-link" id="outlook-tab" data-toggle="tab" role="tab" aria-controls="outlook" aria-selected="true"
+						 (click)="switchSettings(false)" #outlookTab>Outlook</a>
+					</li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+					<div class="alert alert-danger" *ngIf="errorOccured">
+						<small>Something went wrong(server is dead?).
+							<br> Please try again later.</small>
 					</div>
-					<div class="form-group">
-						<label>Sender Name<span class="text-danger">*</span></label>
-						<input type="text" name="from_name" class="form-control" placeholder="Sender Name" formControlName="from_name" [(ngModel)]="mailSettings.from_name">
-						<div *ngIf="mailForm.controls.from_name.invalid && (mailForm.controls.from_name.dirty || mailForm.controls.from_name.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.from_name.errors.required">
-								Sender Name is required
+					<div class="tab-pane fade show active" id="smtp" role="tabpanel">
+						<form [formGroup]="mailForm">
+							<div class="form-group">
+								<label>Sender Email
+									<span class="text-danger">*</span>
+								</label>
+								<input type="email" name="from_" class="form-control" placeholder="sender@me.com" formControlName="from_" [(ngModel)]="mailSettings.from_">
+								<div *ngIf="mailForm.controls.from_.invalid && (mailForm.controls.from_.dirty || mailForm.controls.from_.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.from_.errors.required">
+										Sender Email ID is required
+									</div>
+									<div class="text-danger" *ngIf="mailForm.controls.from_.errors.email">
+										Email ID is incorrect
+									</div>
+								</div>
 							</div>
-						</div>
+							<div class="form-group">
+								<label>Sender Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="from_name" class="form-control" placeholder="Sender Name" formControlName="from_name" [(ngModel)]="mailSettings.from_name">
+								<div *ngIf="mailForm.controls.from_name.invalid && (mailForm.controls.from_name.dirty || mailForm.controls.from_name.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.from_name.errors.required">
+										Sender Name is required
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Password
+									<span class="text-danger">*</span>
+								</label>
+								<input type="password" name="pass_" class="form-control" placeholder="Password" formControlName="pass_" [(ngModel)]="senderPassword">
+								<div *ngIf="mailForm.controls.pass_.invalid && (mailForm.controls.pass_.dirty || mailForm.controls.pass_.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.pass_.errors.required">
+										Sender Email Password is required
+									</div>
+								</div>
+								<small>Password will not be saved for security purposes</small>
+							</div>
+							<div class="form-group">
+								<label>Receiver Email
+									<span class="text-danger">*</span>
+								</label>
+								<input type="email" name="to_" class="form-control" placeholder="receiver@it.com" formControlName="to_" [(ngModel)]="mailSettings.to_">
+								<div *ngIf="mailForm.controls.to_.invalid && (mailForm.controls.to_.dirty || mailForm.controls.to_.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.to_.errors.required">
+										Receiver Email ID is required
+									</div>
+									<div class="text-danger" *ngIf="mailForm.controls.to_.errors.email">
+										Email ID is incorrect
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Receiver Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="to_name" class="form-control" placeholder="Receiver Name" formControlName="to_name" [(ngModel)]="mailSettings.to_name">
+								<div *ngIf="mailForm.controls.to_name.invalid && (mailForm.controls.to_name.dirty || mailForm.controls.to_name.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.to_name.errors.required">
+										Receiver Name is required
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Project Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="to_name" class="form-control" placeholder="Project Name" formControlName="project_name" [(ngModel)]="mailSettings.project_name">
+								<div *ngIf="mailForm.controls.project_name.invalid && (mailForm.controls.project_name.dirty || mailForm.controls.project_name.touched)">
+									<div class="text-danger" *ngIf="mailForm.controls.project_name.errors.required">
+										Project Name is required
+									</div>
+								</div>
+							</div>
+						</form>
 					</div>
-					<div class="form-group">
-						<label>Password<span class="text-danger">*</span></label>
-						<input type="password" name="pass_" class="form-control" placeholder="Password" formControlName="pass_" [(ngModel)]="senderPassword">
-						<div *ngIf="mailForm.controls.pass_.invalid && (mailForm.controls.pass_.dirty || mailForm.controls.pass_.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.pass_.errors.required">
-								Sender Email Password is required
+					<div class="tab-pane fade" id="outlook" role="tabpanel">
+						<form [formGroup]="outlookForm">
+							<div class="form-group">
+								<label>Sender Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="from_name" class="form-control" placeholder="Sender Name" formControlName="from_name" [(ngModel)]="mailSettings.from_name">
+								<div *ngIf="outlookForm.controls.from_name.invalid && (outlookForm.controls.from_name.dirty || outlookForm.controls.from_name.touched)">
+									<div class="text-danger" *ngIf="outlookForm.controls.from_name.errors.required">
+										Sender Name is required
+									</div>
+								</div>
 							</div>
-						</div>
-						<small>Password will not saved for security purposes</small>
+							<div class="form-group">
+								<label>Receiver Email
+									<span class="text-danger">*</span>
+								</label>
+								<input type="email" name="to_" class="form-control" placeholder="receiver@it.com" formControlName="to_" [(ngModel)]="mailSettings.to_">
+								<div *ngIf="outlookForm.controls.to_.invalid && (outlookForm.controls.to_.dirty || outlookForm.controls.to_.touched)">
+									<div class="text-danger" *ngIf="outlookForm.controls.to_.errors.required">
+										Receiver Email ID is required
+									</div>
+									<div class="text-danger" *ngIf="outlookForm.controls.to_.errors.email">
+										Email ID is incorrect
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Receiver Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="to_name" class="form-control" placeholder="Receiver Name" formControlName="to_name" [(ngModel)]="mailSettings.to_name">
+								<div *ngIf="outlookForm.controls.to_name.invalid && (outlookForm.controls.to_name.dirty || outlookForm.controls.to_name.touched)">
+									<div class="text-danger" *ngIf="outlookForm.controls.to_name.errors.required">
+										Receiver Name is required
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Project Name
+									<span class="text-danger">*</span>
+								</label>
+								<input type="text" name="to_name" class="form-control" placeholder="Project Name" formControlName="project_name" [(ngModel)]="mailSettings.project_name">
+								<div *ngIf="outlookForm.controls.project_name.invalid && (outlookForm.controls.project_name.dirty || outlookForm.controls.project_name.touched)">
+									<div class="text-danger" *ngIf="outlookForm.controls.project_name.errors.required">
+										Project Name is required
+									</div>
+								</div>
+							</div>
+						</form>
 					</div>
-					<div class="form-group">
-						<label>Receiver Email<span class="text-danger">*</span></label>
-						<input type="email" name="to_" class="form-control" placeholder="receiver@it.com" formControlName="to_" [(ngModel)]="mailSettings.to_">
-						<div *ngIf="mailForm.controls.to_.invalid && (mailForm.controls.to_.dirty || mailForm.controls.to_.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.to_.errors.required">
-								Receiver Email ID is required
-							</div>
-							<div class="text-danger" *ngIf="mailForm.controls.to_.errors.email">
-								Email ID is incorrect
-							</div>
-						</div>
+					<small>Mail Settings will be saved automatically</small>
+					<div class="alert alert-danger" *ngIf="errorOccured">
+						<small>
+							Something went wrong(server is dead?).
+							<br> Please try again later.
+						</small>
 					</div>
-					<div class="form-group">
-						<label>Receiver Name<span class="text-danger">*</span></label>
-						<input type="text" name="to_name" class="form-control" placeholder="Receiver Name" formControlName="to_name" [(ngModel)]="mailSettings.to_name">
-						<div *ngIf="mailForm.controls.to_name.invalid && (mailForm.controls.to_name.dirty || mailForm.controls.to_name.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.to_name.errors.required">
-								Receiver Name is required
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label>Project Name<span class="text-danger">*</span></label>
-						<input type="text" name="to_name" class="form-control" placeholder="Project Name" formControlName="project_name" [(ngModel)]="mailSettings.project_name">
-						<div *ngIf="mailForm.controls.project_name.invalid && (mailForm.controls.project_name.dirty || mailForm.controls.project_name.touched)">
-							<div class="text-danger" *ngIf="mailForm.controls.project_name.errors.required">
-								Project Name is required
-							</div>
-						</div>
-					</div>
-				</form>
-				<small>Mail Settings will be saved automatically</small>
-				<div class="alert alert-danger" *ngIf="errorOccured">
-					Something went wrong(maybr server is under attack). Please try again later.
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-sm btn-primary" [disabled]="!mailForm.valid" (click)="sendMail()">Send</button>
+				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="closeMailForm()">Close</button>
+				<button type="button" class="btn btn-sm btn-primary" *ngIf="smtpActive" [disabled]="!mailForm.valid" (click)="sendSMTPMail()">Send via SMTP</button>
+				<button type="button" class="btn btn-sm btn-primary" *ngIf="!smtpActive" [disabled]="!outlookForm.valid" (click)="sendOutlookMail()">Send via Outlook</button>
 			</div>
 		</div>
 	</div>

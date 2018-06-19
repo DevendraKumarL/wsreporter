@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class WsbeApiService {
 
 	public apiURL = "http://localhost:5002/wsbe/";
-	public mailURL = "http://localhost:5000/wsmailer/sendmail";
+	public mailURL = "http://localhost:5000/wsmailer/";
 
 	public reports: any = [];
 	public draftReport: any;
@@ -82,6 +82,10 @@ export class WsbeApiService {
 	}
 
 	sendWSReportMail(mailData) {
-		return this.client.post(this.mailURL, mailData);
+		return this.client.post(this.mailURL + "sendmail-smtp", mailData);
+	}
+
+	sendWSReportOutlookMail(mailData) {
+		return this.client.post(this.mailURL + "sendmail-outlook", mailData);
 	}
 }
