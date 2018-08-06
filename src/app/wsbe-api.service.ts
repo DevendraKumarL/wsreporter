@@ -39,6 +39,8 @@ export class WsbeApiService {
 	submitReport() {
 		let report = JSON.parse(JSON.stringify(this.draftReport)); // deep clone
 		report.highlights = report.highlights.replace(new RegExp('\n', 'g'), "<br>");
+		report.codeReviews = report.codeReviews.replace(new RegExp('\n', 'g'), "<br>");
+		report.planForWeek = report.planForWeek.replace(new RegExp('\n', 'g'), "<br>");
 		console.log("***report*** : ", report);
 		return this.client.post(this.apiURL + "report", report);
 	}
