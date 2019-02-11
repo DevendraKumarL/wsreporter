@@ -23,9 +23,10 @@ export class ReportComponent {
 			wsrDate: this.reportDetails.report_date,
 			line2: "Project: Horizon 7",
 			highlights: this.reportDetails.highlights.split("<br>"),
-			bugs: this.reportDetails.bugzillaURL,
+			bugs: this.reportDetails.bugzillaURL.includes("<br>") ? this.reportDetails.bugzillaURL.split("<br>") : [this.reportDetails.bugzillaURL],
 			codeReviews: this.reportDetails.codeReviews.split("<br>"),
 			planForWeek: this.reportDetails.planForWeek.split("<br>"),
 		}
+		console.log("report data: ", this.reportData);
 	}
 }

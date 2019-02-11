@@ -29,8 +29,29 @@
 		<h5>
 			Week Status Report
 			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mailModalForm">Send Mail</button>
+			<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteReport">Delete</button>
 		</h5>
 		<report [reportDetails]=report></report>
+	</div>
+</div>
+
+<div class="modal fase" id="deleteReport" tabindex="-1" role="dialog" aria-hidden="true" #deleteReportModal>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"> Delete Report?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want delete this report?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" (click)="deleteReport()">Yes</button>
+			</div>
+		</div>
 	</div>
 </div>
 

@@ -49,8 +49,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="">Bugzilla URL</label>
-						<input type="text" name="bugzillaURL" class="form-control" formControlName="bugzillaURL">
+						<label for="">Bugzilla</label>
+						<textarea name="bugzillaURL" class="form-control" formControlName="bugzillaURL" cols="30" rows="2"></textarea>
 						<div *ngIf="reportFormGroup.controls.bugzillaURL.invalid && (reportFormGroup.controls.bugzillaURL.dirty || reportFormGroup.controls.bugzillaURL.touched)">
 							<div *ngIf="reportFormGroup.controls.bugzillaURL.errors.required" class="text-danger">
 								BugzillaURL is required

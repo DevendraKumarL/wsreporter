@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WsbeApiService } from '../wsbe-api.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -39,7 +40,7 @@ export class SingleReportComponent {
 	public outlookTab: ElementRef;
 
 	constructor(public activeRoute: ActivatedRoute, public wsService: WsbeApiService,
-		public formB: FormBuilder) {
+		public formB: FormBuilder, public router: Router) {
 		this.activeRoute.params.subscribe(params => {
 			this.reportID = params.id;
 			console.log("reportID: ", this.reportID);
@@ -165,6 +166,16 @@ export class SingleReportComponent {
 			console.log("Error response, error: ", error);
 			this.errorOccured = true;
 			this.sending = false;
+		})
+	}
+
+	deleteReport() {
+		this.wsService.deleteReport(this.reportID).subscribe((response: any) => {
+			console.log("Success response. response: ", response);
+			this.router.navigate(["/"]);
+		}, (error: any) => {
+			console.log("Error response, error: ", error);
+			this.errorOccured = true;
 		})
 	}
 }

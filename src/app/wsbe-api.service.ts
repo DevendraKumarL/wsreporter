@@ -41,6 +41,7 @@ export class WsbeApiService {
 		report.highlights = report.highlights.replace(new RegExp('\n', 'g'), "<br>");
 		report.codeReviews = report.codeReviews.replace(new RegExp('\n', 'g'), "<br>");
 		report.planForWeek = report.planForWeek.replace(new RegExp('\n', 'g'), "<br>");
+		report.bugzillaURL = report.bugzillaURL.replace(new RegExp('\n', 'g'), "<br>");
 		console.log("***report*** : ", report);
 		return this.client.post(this.apiURL + "report", report);
 	}
@@ -53,6 +54,9 @@ export class WsbeApiService {
 		return this.client.get(this.apiURL + "report/" + reportID);
 	}
 
+	deleteReport(reportID) {
+		return this.client.delete(this.apiURL + "report/" + reportID);
+	}
 
 	getDraftReport() {
 		return this.client.get(this.apiURL + "draft");

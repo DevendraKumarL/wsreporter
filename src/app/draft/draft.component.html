@@ -39,7 +39,7 @@
 					<div class="form-group">
 						<label for="">Report Date</label>
 						<input type="date" name="report_date" class="form-control" formControlName="report_date" [readOnly]="!enableEditDraft">
-						<div *ngIf="draftReportFormGroup.controls.report_date.invalid && (draftReportFormGroup.controls.report_date.dirty || draftReportFormGroup.controls.report_date.touched)">
+						<div *ngIf="draftReportFormGroup.controls.report_date.invalid && (draftReportFormGroup.controls.report_date.dirty || draftReportFormGroup.controls.report_date.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.report_date.errors.required" class="text-danger">
 								Report Date is required
 							</div>
@@ -48,7 +48,7 @@
 					<div class="form-group">
 						<label for="">Report Start</label>
 						<input type="date" name="ws_start" class="form-control" formControlName="ws_start" [readOnly]="!enableEditDraft">
-						<div *ngIf="draftReportFormGroup.controls.ws_start.invalid && (draftReportFormGroup.controls.ws_start.dirty || draftReportFormGroup.controls.ws_start.touched)">
+						<div *ngIf="draftReportFormGroup.controls.ws_start.invalid && (draftReportFormGroup.controls.ws_start.dirty || draftReportFormGroup.controls.ws_start.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.ws_start.errors.required" class="text-danger">
 								Report Start Date is required
 							</div>
@@ -57,7 +57,7 @@
 					<div class="form-group">
 						<label for="">Report End</label>
 						<input type="date" name="ws_end" class="form-control" formControlName="ws_end" [readOnly]="!enableEditDraft">
-						<div *ngIf="draftReportFormGroup.controls.ws_end.invalid && (draftReportFormGroup.controls.ws_end.dirty || draftReportFormGroup.controls.ws_end.touched)">
+						<div *ngIf="draftReportFormGroup.controls.ws_end.invalid && (draftReportFormGroup.controls.ws_end.dirty || draftReportFormGroup.controls.ws_end.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.ws_end.errors.required" class="text-danger">
 								Report End Date is required
 							</div>
@@ -65,8 +65,8 @@
 					</div>
 					<div class="form-group">
 						<label for="">Bugzilla URL</label>
-						<input type="text" name="bugzillaURL" class="form-control" formControlName="bugzillaURL" [readOnly]="!enableEditDraft">
-						<div *ngIf="draftReportFormGroup.controls.bugzillaURL.invalid && (draftReportFormGroup.controls.bugzillaURL.dirty || draftReportFormGroup.controls.bugzillaURL.touched)">
+						<textarea name="bugzillaURL" class="form-control" formControlName="bugzillaURL" [readOnly]="!enableEditDraft" cols="30" rows="2"></textarea>
+						<div *ngIf="draftReportFormGroup.controls.bugzillaURL.invalid && (draftReportFormGroup.controls.bugzillaURL.dirty || draftReportFormGroup.controls.bugzillaURL.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.bugzillaURL.errors.required" class="text-danger">
 								BugzillaURL is required
 							</div>
@@ -75,7 +75,7 @@
 					<div class="form-group">
 						<label for="">Highlights</label>
 						<textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights" [readOnly]="!enableEditDraft"></textarea>
-						<div *ngIf="draftReportFormGroup.controls.highlights.invalid && (draftReportFormGroup.controls.highlights.dirty || draftReportFormGroup.controls.highlights.touched)">
+						<div *ngIf="draftReportFormGroup.controls.highlights.invalid && (draftReportFormGroup.controls.highlights.dirty || draftReportFormGroup.controls.highlights.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.highlights.errors.required" class="text-danger">
 								Highlights description is required
 							</div>
@@ -84,7 +84,7 @@
 					<div class="form-group">
 						<label for="">Code Reviews</label>
 						<textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews" [readOnly]="!enableEditDraft"></textarea>
-						<div *ngIf="draftReportFormGroup.controls.codeReviews.invalid && (draftReportFormGroup.controls.codeReviews.dirty || draftReportFormGroup.controls.codeReviews.touched)">
+						<div *ngIf="draftReportFormGroup.controls.codeReviews.invalid && (draftReportFormGroup.controls.codeReviews.dirty || draftReportFormGroup.controls.codeReviews.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.codeReviews.errors.required" class="text-danger">
 								CodeReviews description is required
 							</div>
@@ -93,14 +93,14 @@
 					<div class="form-group">
 						<label for="">Plan for this week</label>
 						<textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek" [readOnly]="!enableEditDraft"></textarea>
-						<div *ngIf="draftReportFormGroup.controls.planForWeek.invalid && (draftReportFormGroup.controls.planForWeek.dirty || draftReportFormGroup.controls.planForWeek.touched)">
+						<div *ngIf="draftReportFormGroup.controls.planForWeek.invalid && (draftReportFormGroup.controls.planForWeek.dirty || draftReportFormGroup.controls.planForWeek.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.planForWeek.errors.required" class="text-danger">
 								Plan for week description is required
 							</div>
 						</div>
 					</div>
 					<input type="submit" name="submit" value="Update Draft" class="btn btn-primary" *ngIf="enableEditDraft" [disabled]="!draftReportFormGroup.valid || draftUpdateError">
-					<button type="button" class="btn btn-danger" (click)="enableEditDraft=false" *ngIf="enableEditDraft">Cancel</button>					
+					<button type="button" class="btn btn-danger" (click)="cancelEditDraft()" *ngIf="enableEditDraft">Cancel</button>
 					<button type="button" class="btn btn-success" (click)="submitFinalReport()" *ngIf="!enableEditDraft && wsbe.draftReport !== undefined">Submit Report</button>
 					<br />
 					<br />

@@ -21,10 +21,10 @@
 						</ul>
 					</li>
 					<li>
-						Bugs
+						Bugzilla
 						<ul>
-							<li>
-								<a href="{{reportData.bugs}}">Bugzilla manager report for the above period</a>
+							<li *ngFor="let bug of reportData.bugs" >
+								<div class="overflow-txt">{{bug}}</div>
 							</li>
 						</ul>
 					</li>

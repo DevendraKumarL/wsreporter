@@ -39,10 +39,14 @@ export class DraftComponent {
 			planForWeek: ["", Validators.compose([Validators.required])]
 		});
 
+		this.getDraftReport();
+	}
+
+	private getDraftReport() {
 		if (this.wsbe.draftReport === undefined) {
 			this.wsbe.draftPresent = false;
 			this.wsbe.getDraftReport().subscribe((dftReport: any) => {
-				console.log("Success response: draftReport: ", dftReport)
+				console.log("Success response: draftReport: ", dftReport);
 				if (dftReport.length > 0) {
 					this.wsbe.draftReport = dftReport[0];
 					this.updateDataInFormGroup(false);
@@ -139,7 +143,7 @@ export class DraftComponent {
 				this.clearData();
 				this.wsbe.draftPresent = false;
 				this.wsbe.draftReport = undefined;
-				this.updateDataInFormGroup(true);				
+				this.updateDataInFormGroup(true);
 			}, (error: any) => {
 				console.log("Error response. error: ", error);
 				this.clearData();
@@ -150,4 +154,8 @@ export class DraftComponent {
 		}
 	}
 
+	cancelEditDraft() {
+		this.enableEditDraft = false;
+		this.getDraftReport();
+	}
 }
