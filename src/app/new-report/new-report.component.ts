@@ -17,13 +17,14 @@ export class NewReportComponent {
 
 	constructor(public formBuilder: FormBuilder,
 		public wsbe: WsbeApiService, public router: Router) {
-		
+
 		this.wsbe.fetchReports();
 
 		this.reportFormGroup = this.formBuilder.group({
 			report_date: ["", Validators.compose([Validators.required])],
 			ws_start: ["", Validators.compose([Validators.required])],
 			ws_end: ["", Validators.compose([Validators.required])],
+			project: ["", Validators.compose([Validators.required])],
 			bugzillaURL: ["", Validators.compose([Validators.required])],
 			highlights: ["", Validators.compose([Validators.required])],
 			codeReviews: ["", Validators.compose([Validators.required])],
@@ -47,6 +48,7 @@ export class NewReportComponent {
 			report_date: this.reportFormGroup.controls.report_date.value,
 			ws_start: this.reportFormGroup.controls.ws_start.value,
 			ws_end: this.reportFormGroup.controls.ws_end.value,
+			project: this.reportFormGroup.controls.project.value,
 			bugzillaURL: this.reportFormGroup.controls.bugzillaURL.value,
 			highlights: this.reportFormGroup.controls.highlights.value,
 			codeReviews: this.reportFormGroup.controls.codeReviews.value,

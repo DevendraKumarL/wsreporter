@@ -23,6 +23,7 @@ export class WsbeApiService {
 					report_date: new Date(reports[i].report_date).toISOString().substr(0, 10),
 					ws_start: new Date(reports[i].ws_start).toISOString().substr(0, 10),
 					ws_end: new Date(reports[i].ws_end).toISOString().substr(0, 10),
+					project: reports[i].project,
 					bugzillaURL: reports[i].bugzillaURL,
 					highlights: reports[i].highlights,
 					codeReviews: reports[i].codeReviews,
@@ -30,7 +31,7 @@ export class WsbeApiService {
 					_id: reports[i]._id
 				});
 			}
-			console.log("Success response. reports: ", this.reports);
+			// console.log("Success response. reports: ", this.reports);
 		}, (error: any) => {
 			console.log("Error response. error: ", error);
 		});
@@ -42,7 +43,7 @@ export class WsbeApiService {
 		report.codeReviews = report.codeReviews.replace(new RegExp('\n', 'g'), "<br>");
 		report.planForWeek = report.planForWeek.replace(new RegExp('\n', 'g'), "<br>");
 		report.bugzillaURL = report.bugzillaURL.replace(new RegExp('\n', 'g'), "<br>");
-		console.log("***report*** : ", report);
+		console.log("*** submit report*** : ", report);
 		return this.client.post(this.apiURL + "report", report);
 	}
 

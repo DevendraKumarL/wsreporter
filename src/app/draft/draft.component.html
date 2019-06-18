@@ -64,8 +64,18 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label for="">Project</label>
+						<input type="text" name="project" class="form-control" formControlName="project" [readOnly]="!enableEditDraft">
+						<div *ngIf="draftReportFormGroup.controls.project.invalid && (draftReportFormGroup.controls.project.dirty || draftReportFormGroup.controls.project.touched)">
+							<div *ngIf="draftReportFormGroup.controls.project.errors.required" class="text-danger">
+								Project name is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="">Bugzilla URL</label>
 						<textarea name="bugzillaURL" class="form-control" formControlName="bugzillaURL" [readOnly]="!enableEditDraft" cols="30" rows="2"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="draftReportFormGroup.controls.bugzillaURL.invalid && (draftReportFormGroup.controls.bugzillaURL.dirty || draftReportFormGroup.controls.bugzillaURL.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.bugzillaURL.errors.required" class="text-danger">
 								BugzillaURL is required
@@ -75,6 +85,7 @@
 					<div class="form-group">
 						<label for="">Highlights</label>
 						<textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights" [readOnly]="!enableEditDraft"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="draftReportFormGroup.controls.highlights.invalid && (draftReportFormGroup.controls.highlights.dirty || draftReportFormGroup.controls.highlights.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.highlights.errors.required" class="text-danger">
 								Highlights description is required
@@ -84,6 +95,7 @@
 					<div class="form-group">
 						<label for="">Code Reviews</label>
 						<textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews" [readOnly]="!enableEditDraft"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="draftReportFormGroup.controls.codeReviews.invalid && (draftReportFormGroup.controls.codeReviews.dirty || draftReportFormGroup.controls.codeReviews.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.codeReviews.errors.required" class="text-danger">
 								CodeReviews description is required
@@ -93,6 +105,7 @@
 					<div class="form-group">
 						<label for="">Plan for this week</label>
 						<textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek" [readOnly]="!enableEditDraft"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="draftReportFormGroup.controls.planForWeek.invalid && (draftReportFormGroup.controls.planForWeek.dirty || draftReportFormGroup.controls.planForWeek.touched) && wsbe.draftPresent">
 							<div *ngIf="draftReportFormGroup.controls.planForWeek.errors.required" class="text-danger">
 								Plan for week description is required

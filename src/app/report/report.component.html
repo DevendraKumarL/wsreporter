@@ -10,13 +10,13 @@
 			<div class="card-body">
 				<span>{{reportData.wsrPeroid}}</span>
 				<br>
-				<span>{{reportData.line2}}</span>
+				<span>{{reportData.project}}</span>
 				<ul>
 					<li>
 						Highlights
 						<ul>
 							<li *ngFor="let highlight of reportData.highlights">
-								{{highlight}}
+								<div [innerHTML]="highlight"></div>
 							</li>
 						</ul>
 					</li>
@@ -24,7 +24,7 @@
 						Bugzilla
 						<ul>
 							<li *ngFor="let bug of reportData.bugs" >
-								<div class="overflow-txt">{{bug}}</div>
+								<div [innerHTML]="bug"></div>
 							</li>
 						</ul>
 					</li>
@@ -32,7 +32,7 @@
 						Code Reviews
 						<ul>
 							<li *ngFor="let codeReview of reportData.codeReviews">
-								{{codeReview}}
+								<div [innerHTML]="codeReview"></div>
 							</li>
 						</ul>
 					</li>
@@ -40,7 +40,7 @@
 						Plan for this week
 						<ul>
 							<li *ngFor="let plan of reportData.planForWeek">
-								{{plan}}
+								<div [innerHTML]="plan"></div>
 							</li>
 						</ul>
 					</li>

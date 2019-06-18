@@ -26,11 +26,10 @@
 
 <div class="row" *ngIf="report !== undefined">
 	<div class="col-lg-12 col-md-12">
-		<h5>
-			Week Status Report
-			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mailModalForm">Send Mail</button>
-			<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteReport">Delete</button>
-		</h5>
+		<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#mailModalForm">Send Mail</button>
+		<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteReport">Delete</button>
+		<br />
+		<br />
 		<report [reportDetails]=report></report>
 	</div>
 </div>
@@ -60,7 +59,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Mail Details</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeMailForm()">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -77,8 +76,7 @@
 				</ul>
 				<div class="tab-content" id="myTabContent">
 					<div class="alert alert-danger" *ngIf="errorOccured">
-						<small>Something went wrong(server is dead?).
-							<br> Please try again later.</small>
+						<small>Something went wrong. Please try again later.</small>
 					</div>
 					<div class="tab-pane fade show active" id="smtp" role="tabpanel">
 						<form [formGroup]="mailForm">
@@ -144,17 +142,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<label>Project Name
-									<span class="text-danger">*</span>
-								</label>
-								<input type="text" name="to_name" class="form-control" placeholder="Project Name" formControlName="project_name" [(ngModel)]="mailSettings.project_name">
-								<div *ngIf="mailForm.controls.project_name.invalid && (mailForm.controls.project_name.dirty || mailForm.controls.project_name.touched)">
-									<div class="text-danger" *ngIf="mailForm.controls.project_name.errors.required">
-										Project Name is required
-									</div>
-								</div>
-							</div>
 						</form>
 					</div>
 					<div class="tab-pane fade" id="outlook" role="tabpanel">
@@ -195,26 +182,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<label>Project Name
-									<span class="text-danger">*</span>
-								</label>
-								<input type="text" name="to_name" class="form-control" placeholder="Project Name" formControlName="project_name" [(ngModel)]="mailSettings.project_name">
-								<div *ngIf="outlookForm.controls.project_name.invalid && (outlookForm.controls.project_name.dirty || outlookForm.controls.project_name.touched)">
-									<div class="text-danger" *ngIf="outlookForm.controls.project_name.errors.required">
-										Project Name is required
-									</div>
-								</div>
-							</div>
 						</form>
 					</div>
 					<small>Mail Settings will be saved automatically</small>
-					<div class="alert alert-danger" *ngIf="errorOccured">
-						<small>
-							Something went wrong(server is dead?).
-							<br> Please try again later.
-						</small>
-					</div>
 				</div>
 			</div>
 			<div class="modal-footer">

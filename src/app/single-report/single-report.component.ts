@@ -51,14 +51,12 @@ export class SingleReportComponent {
 				from_name: ["", Validators.compose([Validators.required])],
 				pass_: ["", Validators.compose([Validators.required])],
 				to_: ["", Validators.compose([Validators.required, Validators.email])],
-				to_name: ["", Validators.compose([Validators.required])],
-				project_name: ["", Validators.compose([Validators.required])]
+				to_name: ["", Validators.compose([Validators.required])]
 			});
 			this.outlookForm = this.formB.group({
 				from_name: ["", Validators.compose([Validators.required])],
 				to_: ["", Validators.compose([Validators.required, Validators.email])],
-				to_name: ["", Validators.compose([Validators.required])],
-				project_name: ["", Validators.compose([Validators.required])]
+				to_name: ["", Validators.compose([Validators.required])]
 			});
 			this.getMailSettings();
 		});
@@ -89,19 +87,22 @@ export class SingleReportComponent {
 	getMailSettings() {
 		this.wsService.fetchMailSettings().subscribe((mailSettings: any) => {
 			console.log("Success response. mailSettings: ", mailSettings);
-			this.wsService.mailSettings = mailSettings[0];
-			this.mailSettings = {
-				from_: this.wsService.mailSettings.from_,
-				from_name: this.wsService.mailSettings.from_name,
-				project_name: this.wsService.mailSettings.project_name,
-				to_: this.wsService.mailSettings.to_,
-				to_name: this.wsService.mailSettings.to_name,
-			};
+			this.wsService.mailSettings = mailSettings[0]? mailSettings[0] : [];
 			delete this.wsService.mailSettings._id;
 			delete this.wsService.mailSettings.__v;
+			this.updateMailData();
 		}, (error: any) => {
 			console.log("Error response. error: ", error.error.error);
 		});
+	}
+
+	updateMailData() {
+		this.mailSettings = this.wsService.mailSettings ? {
+			from_: this.wsService.mailSettings.from_,
+			from_name: this.wsService.mailSettings.from_name,
+			to_: this.wsService.mailSettings.to_,
+			to_name: this.wsService.mailSettings.to_name,
+		} : [];
 	}
 
 	saveMailSettings() {
@@ -113,6 +114,13 @@ export class SingleReportComponent {
 		this.senderPassword = "";
 		this.sending = false;
 		this.smtpActive = true;
+		this.mailForm.markAsPristine();
+		this.mailForm.markAsUntouched();
+		this.mailForm.updateValueAndValidity();
+		this.outlookForm.markAsPristine();
+		this.outlookForm.markAsUntouched();
+		this.outlookForm.updateValueAndValidity();
+		this.updateMailData();
 		$(this.smtpTab.nativeElement).trigger('click');
 	}
 
@@ -129,9 +137,9 @@ export class SingleReportComponent {
 			from_name: this.mailSettings.from_name,
 			to_: this.mailSettings.to_,
 			to_name: this.mailSettings.to_name,
-			project_name: this.mailSettings.project_name,
 			pass_: this.senderPassword,
-			report: this.report
+			report: this.report,
+			reportHTML: document.getElementsByClassName("card-body")[0].innerHTML
 		};
 		console.log(mailData);
 		this.wsService.sendWSReportMail(mailData).subscribe((response: any) => {
@@ -153,8 +161,8 @@ export class SingleReportComponent {
 			from_name: this.mailSettings.from_name,
 			to_: this.mailSettings.to_,
 			to_name: this.mailSettings.to_name,
-			project_name: this.mailSettings.project_name,
-			report: this.report
+			report: this.report,
+			reportHTML: document.getElementsByClassName("card-body")[0].innerHTML
 		};
 		console.log(mailData);
 		this.wsService.sendWSReportOutlookMail(mailData).subscribe((response: any) => {

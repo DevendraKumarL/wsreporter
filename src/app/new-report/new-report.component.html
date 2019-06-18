@@ -49,8 +49,18 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label for="">Project</label>
+						<input type="text" name="project" class="form-control" formControlName="project">
+						<div *ngIf="reportFormGroup.controls.project.invalid && (reportFormGroup.controls.project.dirty || reportFormGroup.controls.project.touched)">
+							<div *ngIf="reportFormGroup.controls.project.errors.required" class="text-danger">
+								Project name is required
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="">Bugzilla</label>
 						<textarea name="bugzillaURL" class="form-control" formControlName="bugzillaURL" cols="30" rows="2"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="reportFormGroup.controls.bugzillaURL.invalid && (reportFormGroup.controls.bugzillaURL.dirty || reportFormGroup.controls.bugzillaURL.touched)">
 							<div *ngIf="reportFormGroup.controls.bugzillaURL.errors.required" class="text-danger">
 								BugzillaURL is required
@@ -60,6 +70,7 @@
 					<div class="form-group">
 						<label for="">Highlights</label>
 						<textarea name="highlights" cols="30" rows="10" class="form-control" formControlName="highlights"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="reportFormGroup.controls.highlights.invalid && (reportFormGroup.controls.highlights.dirty || reportFormGroup.controls.highlights.touched)">
 							<div *ngIf="reportFormGroup.controls.highlights.errors.required" class="text-danger">
 								Highlights description is required
@@ -69,6 +80,7 @@
 					<div class="form-group">
 						<label for="">Code Reviews</label>
 						<textarea name="codeReviews" cols="30" rows="2" class="form-control" formControlName="codeReviews"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="reportFormGroup.controls.codeReviews.invalid && (reportFormGroup.controls.codeReviews.dirty || reportFormGroup.controls.codeReviews.touched)">
 							<div *ngIf="reportFormGroup.controls.codeReviews.errors.required" class="text-danger">
 								CodeReviews description is required
@@ -78,6 +90,7 @@
 					<div class="form-group">
 						<label for="">Plan for this week</label>
 						<textarea name="planForWeek" cols="30" rows="5" class="form-control" formControlName="planForWeek"></textarea>
+						<small>Enter data on new lines to form a list</small>
 						<div *ngIf="reportFormGroup.controls.planForWeek.invalid && (reportFormGroup.controls.planForWeek.dirty || reportFormGroup.controls.planForWeek.touched)">
 							<div *ngIf="reportFormGroup.controls.planForWeek.errors.required" class="text-danger">
 								Plan for week description is required

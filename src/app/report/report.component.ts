@@ -21,12 +21,28 @@ export class ReportComponent {
 		this.reportData = {
 			wsrPeroid: "WSR for the period: " + this.reportDetails.ws_start + " - " + this.reportDetails.ws_end,
 			wsrDate: this.reportDetails.report_date,
-			line2: "Project: Horizon 7",
-			highlights: this.reportDetails.highlights.split("<br>"),
-			bugs: this.reportDetails.bugzillaURL.includes("<br>") ? this.reportDetails.bugzillaURL.split("<br>") : [this.reportDetails.bugzillaURL],
-			codeReviews: this.reportDetails.codeReviews.split("<br>"),
-			planForWeek: this.reportDetails.planForWeek.split("<br>"),
+			project: "Project: " + this.reportDetails.project,
+			highlights: this.getListOfItems(this.reportDetails.highlights),
+			bugs: this.getListOfItems(this.reportDetails.bugzillaURL),
+			codeReviews: this.getListOfItems(this.reportDetails.codeReviews),
+			planForWeek: this.getListOfItems(this.reportDetails.planForWeek),
 		}
 		console.log("report data: ", this.reportData);
+	}
+
+	getListOfItems(rawData) {
+		let dataItems = rawData.split("<br>");
+		let items = [];
+		dataItems.forEach(element => {
+			items.push(this.linkifyText(element));
+		});
+		return items;
+	}
+
+	linkifyText(textContent) {
+		let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+		return textContent.replace(urlRegex, function(url){
+			return '<a href="' + url + '">' + url + '</a>';
+		});
 	}
 }
